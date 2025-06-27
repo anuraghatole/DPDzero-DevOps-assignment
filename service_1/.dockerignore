@@ -1,0 +1,23 @@
+# Python files & folders
+
+**pycache**/
+_.pyc
+_.pyo
+.venv/
+\*.egg-info/
+
+# Go build artifacts
+
+_.out
+_.exe
+_.mod
+_.sum
+
+# VSCode and OS stuff
+
+.vscode/
+.DS_Store
+
+# Git repo
+
+.git/

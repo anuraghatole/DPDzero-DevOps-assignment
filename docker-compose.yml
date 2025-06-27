@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  service1:
+    build: ./service_1
+    container_name: go_service1
+    ports:
+      - "8001:8001"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8001/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  service2:
+    build: ./service_2
+    container_name: flask_service2
+    ports:
+      - "8002:8002"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      - service1
+      - service2
+    networks:
+      - backend
+
+# In Docker Compose, the default network mode is bridge, unless explicitly set to host.
+# We're using a user-defined bridge network called 'backend' below:
+
+networks:
+  backend:
